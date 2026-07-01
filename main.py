@@ -1,30 +1,28 @@
-"""An example of an app running in the flet cross-platform library and framework."""
-import flet as ft
-# pylint: skip-file
+import os
+from data_models import Book, Textbook, Course, LiveCourse, Exercises, LimitedExercises, MilestoneMarker
 
-def main(page: ft.Page):
-    """Initialize and render the counter UI on the given page."""
-    page.title = "Flet counter example"
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+#pylint: skip-file
 
-    input = ft.TextField(value="0", text_align=ft.TextAlign.RIGHT, width=100)
+library: dict[str, Book | Textbook | Course | LiveCourse | Exercises | LimitedExercises | MilestoneMarker] = {
 
-    def minus_click(e):
-        input.value = str(int(input.value) - 1)
+    # Newly Sorted Backlog Books
+    "Serious Python": Book(chapters=13, category="Technical", technology="Python"),
+    "Clean Code: A Handbook of Agile Software Craftsmanship": Book(chapters=37, category="Software Engineering"),
+    "Think Like A Programmer": Book(chapters=8, category="Software Engineering"),
+    "Building a StoryBrand 2.0: Clarify Your Message So Customers Will Listen": Book(chapters=15, category="Marketing"),
+}
 
-    def plus_click(e):
-        input.value = str(int(input.value) + 1)
+# for item in library.values():
+#     print(item)
+#     if isinstance(item, Book):
+#         print(str(item) + " is a book")
+#     else:
+#         print("3")
 
-    page.add(
-        ft.Row(
-            alignment=ft.MainAxisAlignment.CENTER,
-            controls=[
-                ft.IconButton(ft.Icons.REMOVE, on_click=minus_click),
-                input,
-                ft.IconButton(ft.Icons.ADD, on_click=plus_click),
-            ],
-        )
-    )
+for key, value in library.items():
+    print(key)
 
+book_names = [key for key in library]
 
-ft.run(main)
+library_keys = library.keys()
+# print(library_keys)
