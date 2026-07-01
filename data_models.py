@@ -44,9 +44,12 @@ class Exercises:
     technology: Optional[str] = None
     uri_link: Optional[str] = None
 
-@dataclass
+# @dataclass
+# class LimitedExercises(Exercises):
+#     number_of_exercises: int
+
 class LimitedExercises(Exercises):
-    number_of_exercises: int
+    pass
 
 @dataclass
 class MilestoneMarker:
