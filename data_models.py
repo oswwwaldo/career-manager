@@ -6,13 +6,19 @@ from dataclasses import dataclass
 from enum import Enum, unique
 from typing import Optional
 
+@dataclass(kw_only=True)
+class Model:
+    frequency_offset: Optional[int] = None
+    current_chapter: Optional[int] = 1
+
 @dataclass
-class Book:
+class Book(Model):
     """Represents a book or any piece of literature"""
     chapters: int
     category: str
     technology: Optional[str] = None
     uri_link: Optional[str] = None
+    thumbnail: Optional[str] = None
 
 @dataclass
 class Textbook(Book):
@@ -20,7 +26,7 @@ class Textbook(Book):
     required_reading: Optional[bool] = False
 
 @dataclass
-class Course:
+class Course(Model):
     """Can be a series of videos or a structured async course, i.e Odin Project or CompTIA"""
     chapters: int
     category: str
@@ -38,18 +44,14 @@ class LiveCourse(Course):
     assignment_frequency: str
 
 @dataclass
-class Exercises:
+class Exercises(Model):
     """A series of challenges, i.e JS30, HackerRank etc."""
     kind: str
     technology: Optional[str] = None
     uri_link: Optional[str] = None
 
-# @dataclass
-# class LimitedExercises(Exercises):
-#     number_of_exercises: int
-
 class LimitedExercises(Exercises):
-    pass
+    number_of_exercises: int
 
 @dataclass
 class MilestoneMarker:
@@ -65,9 +67,11 @@ class Schedule(Enum):
 
 class Calendar:
     """Holds days, weeks, months and years"""
+    ...
 
 class CalendarView:
     """The GUI object of Calendar, representing a limited 30 day view"""
+    ...
 
 class User:
     ...
