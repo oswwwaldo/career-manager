@@ -2,7 +2,6 @@
 import flet as ft
 # pylint: skip-file
 
-
 def main(page: ft.Page):
     """Initialize and render the counter UI on the given page."""
     page.title = "Flet counter example"
