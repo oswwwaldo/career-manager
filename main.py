@@ -90,21 +90,39 @@ for index, week in enumerate(month_matrix):
 # print(f"Current month matrix: {month_matrix}")
 
 def load_library():
+    print(library)
     pass
 
 def load_calendar():
+    
     pass
 
 def schedule_an_item():
+    print("Determining reading list...")
+
+    flattened_month_matrix = [day for week in month_matrix for day in week if day > 0]
+
+    for i in range(day, len(flattened_month_matrix)):
+        print("July " + str(i))
+
+        for index, (key, value) in enumerate(july_2026_reading_list.items(), start = 1):
+            if value.frequency_offset:
+                print(f" — {key} Chapter {i}")
+                # value.chapters
+
+
+    print(flattened_month_matrix)
     pass
 
 def menu():
     print()
     print("Welcome to Career Manager")
+    print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
     print(f"00. — [Continue execution]")
     print(f"01. — [Load list]")
     print(f"02. — [Load calendar]")
     print(f"03. — [Schedule an item]")
+    print(f"04. — [Remove an item]")
     print()
     print("Use (0-9) to navigate the menu")
 
@@ -132,27 +150,14 @@ def menu():
     match user_input:
         case 1:
             load_library()
+            menu()
         case 2:
             load_calendar()
+            menu()
         case 3:
             schedule_an_item()
+            menu()
         case _:
-            print("Out of range")
+            print("Out of range, try again.")
 
 menu()
-
-
-print("Determining reading list...")
-
-flattened_month_matrix = [day for week in month_matrix for day in week if day > 0]
-
-for i in range(day, len(flattened_month_matrix)):
-    print("July " + str(i))
-
-    for index, (key, value) in enumerate(july_2026_reading_list.items(), start = 1):
-        if value.frequency_offset:
-            print(f" — {key} Chapter {i}")
-            # value.chapters
-
-
-print(flattened_month_matrix)
