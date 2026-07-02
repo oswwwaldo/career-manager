@@ -60,11 +60,7 @@ library: dict[str, Book | Textbook | Course | LiveCourse | Exercises | LimitedEx
     "Marcy Lab School of Software Engineering Fellowship Starts":MilestoneMarker(type="Academic Milestone", date="September 22nd"),
 }
 
-july_2026_reading_list = {}
-for i, (key, value) in enumerate(library.items()):
-    if i >= 5:
-        break
-    july_2026_reading_list[key] = value
+reading_lists = {}
 
 
 now = datetime.now()
@@ -89,15 +85,71 @@ for index, week in enumerate(month_matrix):
 # print(f"It falls in week {week_of_month} of the month.")    
 # print(f"Current month matrix: {month_matrix}")
 
+
+def record_user_input():
+    print("Use (0-9) to navigate the menu")
+    user_input = None
+
+    while user_input is None:
+        raw = input("Enter in your number: ").strip()
+
+        try:
+            user_input = int(raw)
+
+            if user_input > 10 or user_input <= -1:
+                print("Invalid number range, please use 0-9 to navigate the menu")
+                user_input = None
+            else:
+                print("...")
+                return user_input
+
+        except ValueError:
+            if raw.startswith("python -u"):
+                print("\033[96m\nVS Code injected a run command. Exiting cleanly...\033[0m")
+                sys.exit(0)
+            print("Invalid input, please enter in a number.")
+
 def load_library():
-    print(library)
+    month_name = calendar.month_name[month]
+
+    # Hardcoding these for testing for now
+    reading_lists[(year, 'June')] = {}
+    reading_lists[(year, 'August')] = {}
+    reading_lists[(year, 'September')] = {}
+
+    if (year, month_name) in reading_lists:
+        print("Current month reading list already exists.")
+    else:
+        reading_lists[(year, month_name)] = {} 
+
+    print(f"\nLoad list:")
+    for i, lst in enumerate(reading_lists.keys()):
+        print(f"{i:02d}. — [{lst}]")
+
+    choice = record_user_input()
+    keys = list(reading_lists.keys())
+    selected_list = keys[choice]
+
+    
+
+
+
+    # match choice:
+    #     case 1:
+    #         pass
+    #     case _:
+    #         pass
+
+    # july_2026_reading_list = {}
+    # for i, (key, value) in enumerate(library.items()):
+    #     if i >= 5:
+    #         break
+    #     july_2026_reading_list[key] = value
+
+
     pass
 
 def load_calendar():
-    
-    pass
-
-def schedule_an_item():
     print("Determining reading list...")
 
     flattened_month_matrix = [day for week in month_matrix for day in week if day > 0]
@@ -114,50 +166,36 @@ def schedule_an_item():
     print(flattened_month_matrix)
     pass
 
+def schedule_an_item():
+    pass
+
 def menu():
-    print()
-    print("Welcome to Career Manager")
-    print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
-    print(f"00. — [Continue execution]")
-    print(f"01. — [Load list]")
-    print(f"02. — [Load calendar]")
-    print(f"03. — [Schedule an item]")
-    print(f"04. — [Remove an item]")
-    print()
-    print("Use (0-9) to navigate the menu")
+    while True:
+        print()
+        print("Welcome to Career Manager")
+        print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
+        print(f"00. — [Continue execution]")
+        print(f"01. — [Load list]")             # Create library and load file
+        print(f"02. — [Load calendar]")         # Create calendar object and schedule
+        print(f"03. — [Schedule an item]")      # Create an item and add to library
+        print(f"04. — [Remove an item]")        # Remove an item from library
+        print(f"09. — [Exit program]")
+        print()
 
-    user_input = None
+        choice = record_user_input()
 
-    while user_input is None:
-        raw = input("Enter in your number: ").strip()
-
-        try:
-            user_input = int(raw)
-
-            if user_input > 10 | user_input < 0:
-                print("Invalid number range, please use 0-9 to navigate the menu")
-                user_input = None
-            else:
-                print("...")
-                break
-
-        except ValueError:
-            if raw.startswith("python -u"):
-                print("\033[96m\nVS Code injected a run command. Exiting cleanly...\033[0m")
+        match choice:
+            case 1:
+                load_library()
+            case 2:
+                load_calendar()
+            case 3:
+                schedule_an_item()
+            case 4:
+                pass
+            case 9:
                 sys.exit(0)
-            print("Invalid input, please enter in a number.")
-
-    match user_input:
-        case 1:
-            load_library()
-            menu()
-        case 2:
-            load_calendar()
-            menu()
-        case 3:
-            schedule_an_item()
-            menu()
-        case _:
-            print("Out of range, try again.")
+            case _:
+                print("Out of range, try again.")
 
 menu()
