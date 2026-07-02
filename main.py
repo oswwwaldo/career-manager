@@ -1,4 +1,4 @@
-import os
+import os, sys
 from data_models import Model, Book, Textbook, Course, LiveCourse, Exercises, LimitedExercises, MilestoneMarker
 from datetime import date, datetime
 import calendar 
@@ -85,9 +85,9 @@ for index, week in enumerate(month_matrix):
         week_of_month = index + 1 
         break
 
-print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
-print(f"It falls in week {week_of_month} of the month.")    
-print(f"Current month matrix: {month_matrix}")
+# print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
+# print(f"It falls in week {week_of_month} of the month.")    
+# print(f"Current month matrix: {month_matrix}")
 
 def load_library():
     pass
@@ -101,10 +101,11 @@ def schedule_an_item():
 def menu():
     print()
     print("Welcome to Career Manager")
+    print(f"00. — [Continue execution]")
     print(f"01. — [Load list]")
     print(f"02. — [Load calendar]")
     print(f"03. — [Schedule an item]")
-
+    print()
     print("Use (0-9) to navigate the menu")
 
     user_input = None
@@ -123,6 +124,9 @@ def menu():
                 break
 
         except ValueError:
+            if raw.startswith("python -u"):
+                print("\033[96m\nVS Code injected a run command. Exiting cleanly...\033[0m")
+                sys.exit(0)
             print("Invalid input, please enter in a number.")
 
     match user_input:
