@@ -60,8 +60,8 @@ library: dict[str, Book | Textbook | Course | LiveCourse | Exercises | LimitedEx
     "Marcy Lab School of Software Engineering Fellowship Starts":MilestoneMarker(type="Academic Milestone", date="September 22nd"),
 }
 
-reading_lists = {}
-
+target_list = {} 
+reading_lists = {} 
 
 now = datetime.now()
 year, month, day = now.year, now.month, now.day
@@ -69,6 +69,8 @@ user_prefers_sunday = True
 
 sunday_calendar = calendar.Calendar(firstweekday=calendar.SUNDAY)
 monday_calendar = calendar.Calendar(firstweekday=calendar.MONDAY)
+
+selected_reading_list = None
 
 if user_prefers_sunday:
     month_matrix = sunday_calendar.monthdayscalendar(year, month) 
@@ -80,11 +82,6 @@ for index, week in enumerate(month_matrix):
     if day in week:
         week_of_month = index + 1 
         break
-
-# print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
-# print(f"It falls in week {week_of_month} of the month.")    
-# print(f"Current month matrix: {month_matrix}")
-
 
 def record_user_input():
     print("Use (0-9) to navigate the menu")
@@ -114,52 +111,50 @@ def load_library():
 
     # Hardcoding these for testing for now
     reading_lists[(year, 'June')] = {}
-    reading_lists[(year, 'August')] = {}
-    reading_lists[(year, 'September')] = {}
 
     if (year, month_name) in reading_lists:
         print("Current month reading list already exists.")
     else:
         reading_lists[(year, month_name)] = {} 
 
+    reading_lists[(year, 'August')] = {}
+    reading_lists[(year, 'September')] = {}
+
     print(f"\nLoad list:")
     for i, lst in enumerate(reading_lists.keys()):
         print(f"{i:02d}. — [{lst}]")
 
     choice = record_user_input()
+    if choice == 1:
+        for i, (key, value) in enumerate(library.items()):
+            if i >= 5:
+                break
+            reading_lists[(year, month_name)][key] = value
+
     keys = list(reading_lists.keys())
     selected_list = keys[choice]
+    selected_reading_list = reading_lists[selected_list]
+    print(f"Selected: {selected_reading_list}")
+    print(selected_reading_list.items())
+    return selected_reading_list
 
-    
-
-
-
-    # match choice:
-    #     case 1:
-    #         pass
-    #     case _:
-    #         pass
-
-    # july_2026_reading_list = {}
-    # for i, (key, value) in enumerate(library.items()):
-    #     if i >= 5:
-    #         break
-    #     july_2026_reading_list[key] = value
-
-
-    pass
-
-def load_calendar():
-    print("Determining reading list...")
-
+def load_calendar(selected_reading_list):
     flattened_month_matrix = [day for week in month_matrix for day in week if day > 0]
+    
+    if selected_reading_list is None:
+        print(str(flattened_month_matrix))
+        return "Load a reading list first."
+
+    print(f"Determining reading list...")
+    print(f"Selected: {selected_reading_list}")
+
 
     for i in range(day, len(flattened_month_matrix)):
         print("July " + str(i))
 
-        for index, (key, value) in enumerate(july_2026_reading_list.items(), start = 1):
+        for index, (key, value) in enumerate(selected_reading_list.items(), start = 1):
             if value.frequency_offset:
-                print(f" — {key} Chapter {i}")
+                print(f" — {key} Chapter {value.current_chapter + i}")
                 # value.chapters
 
 
@@ -169,16 +164,20 @@ def load_calendar():
 def schedule_an_item():
     pass
 
+
+# User -> Books -> creates List -> Schedules list over intervals
+# User can update books, delete, remove and ultimately modify said list and schedule
 def menu():
     while True:
         print()
         print("Welcome to Career Manager")
         print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
         print(f"00. — [Continue execution]")
-        print(f"01. — [Load list]")             # Create library and load file
-        print(f"02. — [Load calendar]")         # Create calendar object and schedule
-        print(f"03. — [Schedule an item]")      # Create an item and add to library
-        print(f"04. — [Remove an item]")        # Remove an item from library
+        print(f"01. — [Load list]")                          # Load a reading list
+        print(f"02. — [Load calendar and schedule]")         # Create calendar object and schedule
+        print(f"03. — [Add a book/item]")                    # Create an item and add to library
+        print(f"04. — [Remove a book/item]")                 # Remove an item from library
+        print(f"05. — [Start]")                              # Create a list of books, courses and material you'd like to read
         print(f"09. — [Exit program]")
         print()
 
@@ -186,9 +185,9 @@ def menu():
 
         match choice:
             case 1:
-                load_library()
+                selected_reading_list = load_library()
             case 2:
-                load_calendar()
+                load_calendar(selected_reading_list)
             case 3:
                 schedule_an_item()
             case 4:
