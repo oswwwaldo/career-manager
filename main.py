@@ -89,24 +89,53 @@ print(f"Today is day {day} of {calendar.month_name[month]}, {year}.")
 print(f"It falls in week {week_of_month} of the month.")    
 print(f"Current month matrix: {month_matrix}")
 
-print()
-print("Welcome to Career Manager")
-print(f"— 01. [Load list]")
-print(f"— 02. [Load calendar]")
-print(f"— 03. [Schedule an item]")
+def load_library():
+    pass
 
-print("Use (0-9) to navigate the menu")
+def load_calendar():
+    pass
 
-user_input = None
+def schedule_an_item():
+    pass
 
-while (user_input == None):
-    user_input = int(input())
-    if user_input > 10 | user_input < 0:
-        print("Invalid number range, please use 0-9 to navigate the menu")
-        user_input = None
-    else:
-        print("...")
-        break
+def menu():
+    print()
+    print("Welcome to Career Manager")
+    print(f"01. — [Load list]")
+    print(f"02. — [Load calendar]")
+    print(f"03. — [Schedule an item]")
+
+    print("Use (0-9) to navigate the menu")
+
+    user_input = None
+
+    while user_input is None:
+        raw = input("Enter in your number: ").strip()
+
+        try:
+            user_input = int(raw)
+
+            if user_input > 10 | user_input < 0:
+                print("Invalid number range, please use 0-9 to navigate the menu")
+                user_input = None
+            else:
+                print("...")
+                break
+
+        except ValueError:
+            print("Invalid input, please enter in a number.")
+
+    match user_input:
+        case 1:
+            load_library()
+        case 2:
+            load_calendar()
+        case 3:
+            schedule_an_item()
+        case _:
+            print("Out of range")
+
+menu()
 
 
 print("Determining reading list...")
@@ -123,64 +152,3 @@ for i in range(day, len(flattened_month_matrix)):
 
 
 print(flattened_month_matrix)
-# for i in range(0, len(month_matrix)):
-#     if i > 0:
-#         print(i)
-
-
-
-# days_in_feb_leap = calendar.monthrange(2028, 2)[1]  # Returns 29
-# days_in_feb_reg = calendar.monthrange(2027, 2)[1]   # Returns 28
-# days_in_october = calendar.monthrange(2026, 10)[1]  # Returns 31
-
-# calendar = calendar.fromkeys(months_of_the_year) # sets everything to none
-
-# we have to add days, and weeks to each month
-# July = {
-#     "Week_1": #28th, 29th, 30th ["1st", "2nd", "3rd", "4th"]
-#     "Week_2": ["5th, "6th", "7th", "8th", "9th", "10th", "11th"]
-#     "Week_3": ["12th", "13th", "14th", "15th", "16th", "17th", "18th"]
-#     "Week_4": ["19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]
-#     "Week_5": ["26th, "27th", "28th", "29th", "30th", "31st"] # 1st
-# }
-
-# for week in July.keys():
-
-
-# June 1st = {
-#     "Serious Python"  — "Chapter 5" — link to original object instance
-#     "Serious Python"  — "Chapter 5" — link to original object instance
-#     "Serious Python"  — "Chapter 5" — link to original object instance
-# }
-
-# a function would populate everyday
-# a function would have a subtract the target_chapter from the book object depending on the day's dictionary
-
-# Year (dict) -> Month (dict) -> Week (dict) -> Day (dict) -> Reading List
-
-# assume user chooses current month
-# calendar["July"] = 
-
-# for key, value in library.items():
-#     print(key)
-
-#     if isinstance(value, Book):
-#         print(str(key) + " is a book.")
-
-# book_names = [key for key in library]
-
-# library_keys = library.keys()
-
-# print(date.today().strftime("%m/%d/%Y"))
-
-# loggedIn = True
-
-# def print_ui():
-#     if (loggedIn):
-#         print("Today is " + date.today().strftime("%m/%d/%Y"))
-#         print("\nYou have...")
-        
-#         for key, value in todays's date_dict:
-#             print(f"—{key} Chapter {value.chapters}")
-
-# print_ui()
